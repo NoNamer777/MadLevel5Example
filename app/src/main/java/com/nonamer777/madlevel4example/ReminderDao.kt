@@ -6,14 +6,14 @@ import androidx.room.*
 interface ReminderDao {
 
     @Query("select * from reminderTable")
-    fun getAllReminders(): List<Reminder>
+    suspend fun getAllReminders(): List<Reminder>
 
     @Insert
-    fun saveReminder(reminder: Reminder)
+    suspend fun saveReminder(reminder: Reminder)
 
     @Update
-    fun updateReminder(reminder: Reminder)
+    suspend fun updateReminder(reminder: Reminder)
 
     @Delete
-    fun deleteReminder(reminder: Reminder)
+    suspend fun deleteReminder(reminder: Reminder)
 }

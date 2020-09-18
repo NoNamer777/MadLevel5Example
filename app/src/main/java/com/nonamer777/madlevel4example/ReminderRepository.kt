@@ -12,11 +12,11 @@ public class ReminderRepository(context: Context) {
         reminderDao = reminderDatabase!!.reminderDao()
     }
 
-    fun getAllReminder(): List<Reminder> = reminderDao.getAllReminders()
+    suspend fun getAllReminder(): List<Reminder> = reminderDao.getAllReminders()
 
-    fun saveReminder(reminder: Reminder) = reminderDao.saveReminder(reminder)
+    suspend fun saveReminder(reminder: Reminder) = reminderDao.saveReminder(reminder)
 
-    fun updateReminder(reminder: Reminder) = reminderDao.updateReminder(reminder)
+    suspend fun updateReminder(reminder: Reminder) = reminderDao.updateReminder(reminder)
 
-    fun deleteReminder(reminder: Reminder) = reminderDao.deleteReminder(reminder)
+    suspend fun deleteReminder(reminder: Reminder) = reminderDao.deleteReminder(reminder)
 }
