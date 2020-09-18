@@ -1,10 +1,9 @@
-package com.nonamer777.madlevel4example.model.reminder
+package com.nonamer777.madlevel4example
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.nonamer777.madlevel4example.R
 import kotlinx.android.synthetic.main.item_reminder.view.*
 
 class ReminderAdapter(private val reminders: List<Reminder>):

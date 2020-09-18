@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/remindersFragment"
-        android:name="com.nonamer777.madlevel4example.fragment.RemindersFragment"
+        android:name="com.nonamer777.madlevel4example.RemindersFragment"
         android:label="RemindersFragment" >
         <action
             android:id="@+id/action_remindersFragment_to_addReminderFragment"
@@ -16,6 +16,6 @@
     </fragment>
     <fragment
         android:id="@+id/addReminderFragment"
-        android:name="com.nonamer777.madlevel4example.fragment.AddReminderFragment"
+        android:name="com.nonamer777.madlevel4example.AddReminderFragment"
         android:label="AddReminderFragment" />
 </navigation>

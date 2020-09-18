@@ -1,4 +1,4 @@
-package com.nonamer777.madlevel4example.model.reminder
+package com.nonamer777.madlevel4example
 
 import android.content.Context
 
