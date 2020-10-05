@@ -1,24 +1,19 @@
 package com.nonamer777.madlevel5example.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nonamer777.madlevel5example.R
 import com.nonamer777.madlevel5example.model.Reminder
-import com.nonamer777.madlevel5example.repository.ReminderRepository
+import com.nonamer777.madlevel5example.model.ReminderViewModel
 import kotlinx.android.synthetic.main.fragment_reminders.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass where the created Reminders are shown.
@@ -31,28 +26,20 @@ class RemindersFragment: Fragment() {
     /** The Adapter that transforms the data of Reminders into presentable data. */
     private val reminderAdapter = ReminderAdapter(reminders)
 
-    /** The Database connection for the Reminders. */
-    private lateinit var remindersRepo: ReminderRepository
+    private val viewModel: ReminderViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Listener to the result of the Add Reminder Fragment.
-        observeAddReminderResult()
-
-        return inflater.inflate(R.layout.fragment_reminders, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_reminders, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Instantiate the Reminders Repository.
-        remindersRepo = ReminderRepository(requireContext())
-
-        // Get the data from the database and initialize the RecyclerView.
-        getRemindersFromDatabase()
         initRecyclerView()
+
+        // Listener to the result of the Add Reminder Fragment.
+        observeAddReminderResult()
     }
 
     /** Configures the RecyclerView. */
@@ -73,21 +60,12 @@ class RemindersFragment: Fragment() {
 
     /** Observes the output of the `Add Reminder` Fragment and handles its result. */
     private fun observeAddReminderResult() {
-        setFragmentResultListener(REQ_REMINDER_KEY) { key, bundle ->
+        viewModel.reminders.observe(viewLifecycleOwner, { reminders ->
+            this@RemindersFragment.reminders.clear()
+            this@RemindersFragment.reminders.addAll(reminders)
 
-            bundle.getString(BUNDLE_REMINDER_KEY)?.let {
-                // Creates a new Reminder with the inputted text in the Add Reminder Fragment.
-                val reminder = Reminder(it)
-
-                // Save the new Reminder into the Database.
-                CoroutineScope(Dispatchers.Main).launch {
-                    withContext(Dispatchers.IO) { remindersRepo.saveReminder(reminder) }
-
-                    // Update the list of Reminders.
-                    getRemindersFromDatabase()
-                }
-            } ?: Log.e("ReminderFragment", "Request triggered, but empty reminder text!")
-        }
+            reminderAdapter.notifyDataSetChanged()
+        })
     }
 
     /** Creates a touch helper to recognize when a User swipes an item in the recycler view. */
@@ -107,28 +85,9 @@ class RemindersFragment: Fragment() {
                 val reminderToDelete = reminders[viewHolder.adapterPosition]
 
                 // Remove the selected Reminder from the Database.
-                CoroutineScope(Dispatchers.Main).launch {
-                    withContext(Dispatchers.IO) { remindersRepo.deleteReminder(reminderToDelete) }
-
-                    // Update the list of Reminders.
-                    getRemindersFromDatabase()
-                }
+                viewModel.deleteReminder(reminderToDelete)
             }
         }
         return ItemTouchHelper(callback)
-    }
-
-    /** Requests all Reminders from the Database. */
-    private fun getRemindersFromDatabase() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val reminders = withContext(Dispatchers.IO){ remindersRepo.getAllReminder() }
-
-            // Clear the list of Reminders and add all fetched Reminders from the Database.
-            this@RemindersFragment.reminders.clear()
-            this@RemindersFragment.reminders.addAll(reminders)
-
-            // Notify the RecyclerView that the list of Reminders has been updated.
-            reminderAdapter.notifyDataSetChanged()
-        }
     }
 }
