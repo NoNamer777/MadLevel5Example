@@ -1,6 +1,7 @@
-package com.nonamer777.madlevel4example
+package com.nonamer777.madlevel5example.dao
 
 import androidx.room.*
+import com.nonamer777.madlevel5example.model.Reminder
 
 @Dao
 interface ReminderDao {

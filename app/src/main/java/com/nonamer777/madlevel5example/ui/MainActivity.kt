@@ -1,15 +1,15 @@
-package com.nonamer777.madlevel4example
+package com.nonamer777.madlevel5example.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.nonamer777.madlevel5example.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    /** The Navigation controller */
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         toggleFab()
     }
 
+    /** Hides or Shows the FAB. */
     private fun toggleFab() = navController.addOnDestinationChangedListener { _, destination, _ ->
 
         if (destination.id in arrayOf(R.id.addReminderFragment)) fab.hide()

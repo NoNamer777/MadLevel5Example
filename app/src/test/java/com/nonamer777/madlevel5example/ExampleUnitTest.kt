@@ -1,4 +1,4 @@
-package com.nonamer777.madlevel4example
+package com.nonamer777.madlevel5example
 
 import org.junit.Test
 

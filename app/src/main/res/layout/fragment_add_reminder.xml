@@ -6,7 +6,7 @@
     android:id="@+id/clAddReminder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddReminderFragment">
+    tools:context=".ui.AddReminderFragment">
 
     <TextView
         android:id="@+id/tvAddReminderTitle"

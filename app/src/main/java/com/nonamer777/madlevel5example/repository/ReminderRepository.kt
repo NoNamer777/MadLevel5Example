@@ -1,8 +1,11 @@
-package com.nonamer777.madlevel4example
+package com.nonamer777.madlevel5example.repository
 
 import android.content.Context
+import com.nonamer777.madlevel5example.dao.ReminderDao
+import com.nonamer777.madlevel5example.database.ReminderDatabase
+import com.nonamer777.madlevel5example.model.Reminder
 
-public class ReminderRepository(context: Context) {
+class ReminderRepository(context: Context) {
 
     private var reminderDao: ReminderDao
 
